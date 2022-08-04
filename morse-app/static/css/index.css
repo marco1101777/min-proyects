@@ -1,0 +1,20 @@
+body{
+  display:flex;
+  justify-content:center;
+  background:#000;
+}
+form{
+
+  width:90%;
+  text-align:center;
+}
+textarea{
+  border:1px solid blue;
+  background:lightgrey;
+
+}
+::placeholder{
+  color :white ;
+  text-align:center;
+  padding-top:10px;
+}

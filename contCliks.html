@@ -1,0 +1,180 @@
+<!-- Descripcion  
+	un poco de practica con js , el contador de clicks cuenta cuantod clicks puedes dar en 10 seg  tu puntos se acumularan en la parte de abajo , una vez recarges la pagina vlvera todo al inicio 
+	:D 
+ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<style>
+		*{
+			color: white;
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			background: black;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		body section{
+			text-align: center;
+			height: 500px;
+			width: 500px;
+		}
+		.titulo{
+			text-align: center;
+			height:60px;
+			font-size: 30px;	
+			animation: let 4s  infinite;	
+		}
+		@keyframes let {
+			0%{
+				color: blue;
+			}
+			50%{
+				color: white;
+			}
+			100%{
+				color: blue;
+			}
+			
+		}
+		#contador {
+ 			
+ 			text-align: center;
+ 			font-size: 200px;
+ 			height: 300px;
+		}
+		button{
+			height: 80px ;
+			width: 180px;
+			background: blue;
+			color:black;
+			border:1px solid transparent;
+		}
+		button:hover{
+			opacity: 0.6;
+			border: 1px solid white;
+		}
+		#start {
+			height: 80px ;
+			display: block;
+		}
+		.play{
+			height: 80px ;
+			display: none;
+		}
+		.in{
+			
+			height: 40px;
+		}
+		.esp{
+			height: 80px;
+		}
+		.hap{
+			
+			transform: rotate(90deg);
+		}
+	</style>	
+</head>
+<body onload="mostrar()">
+
+	<section>
+		<div class="titulo">clicks :D </div>
+		<div class="in" id="info"></div>
+		<p id="contador"></p>
+		<div class="esp">
+			<div id="star"><button onclick="start()">STAR</button></div>
+			<div class="play" id="pley">
+			<button style="background: green; color:white;" onclick="sumar()">CLICK</button>	
+		</div>
+		</div>
+		
+		<div id="rank"></div>
+	</section>
+	
+	<script>
+		const $ = id  => document.getElementById(id)
+		var play = $('pley');
+		var star  = $('star') ;
+		var seg = 1 ; 
+		var ranking = new Array ; 
+		var cont = 0 ;
+		const time = () => {
+			var  info = $('info') ;
+			if(seg == 11 ){
+				play.style.display = "none"; 
+				info.innerHTML = "Termino :D" ;
+				seg = 1  ;
+				ranking.push(cont); 
+				mostrarR();
+				setTimeout(function(){
+					star.style.display = "block"; 
+				},2000);
+				
+				return ;
+			}
+			setTimeout(function(){
+				info.innerHTML = seg ;
+				seg++; 
+				time();
+			},500);
+
+		}
+		function timefor(ti){
+			if(ti == 0 ){
+				play.style.display = "block"; 
+				info.innerHTML = "Empieza" ;
+				time();
+				return ;
+			}
+			setTimeout(function(){
+				info.innerHTML = ti ;
+				timefor(ti-1);
+			},2000);
+			
+		} 
+		
+		
+		function start(){
+			reset();
+			var info = $('info');
+			info.innerHTML = "tu tiempo empieza en "; 	
+			star.style.display = "none"; 
+			timefor(3);
+
+			
+			
+
+		}
+		function mostrarR(){
+			let r = $('rank');
+			r.innerHTML = ""; 
+			for (var i = 0; i < ranking.length; i++) {
+				var l = i+1; 
+				r.innerHTML += "intento : "+l+" clicks :"+ranking[i] + "<br>"; 
+			}
+			console.log(ranking);
+		}
+		function  mostrar(){
+			let contador = $('contador'); 
+			contador.innerHTML = cont ;
+ 		}
+ 		function sumar(){
+ 			cont++ ;
+ 			mostrar();
+ 		}
+ 		function reset(){
+ 			cont=0 ;
+ 			mostrar();
+ 		}
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>morse code</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+</head>
+<body>
+	
+	<form name = "traductor">
+		<textarea name="nor" id="normal" cols="70" rows="10" placeholder="Texto" onchange="codeMorse()"></textarea><br>
+		<textarea name="mor" id="morse" cols="70" rows="10" placeholder="Morse" onchange="codeNormal();"></textarea><br>
+		<button id="escucha" type="button">Escuchar</button>
+	</form>
+	
+	<script type="text/javascript" src="{{url_for('static' ,filename='js/index.js' )}}"></script>
+</body>
+</html>

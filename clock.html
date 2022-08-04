@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Reloj</title>
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			background: black ;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100vh;
+		}
+		.all{
+			width: 60%;
+			height: 100px;
+		}
+		.ti{
+			display: flex;
+			width: 100%;
+			height: 100%;
+		}
+		#hrs,#min,#seg{
+			align-items: center;		
+			display: flex;
+			height: 80%;
+			justify-content: center;
+			width:33.3% ;
+			font-size:180% ;
+			animation: opa 2s infinite;
+			color:white;
+		}
+		.puntos{
+			align-items: center;		
+			display: flex;
+			font-size:180% ;
+			height: 80%;
+			justify-content: center;
+			width: 3.3%;
+			animation: opa 2s infinite;
+			color:white;
+		}
+		#date{
+			width: 100%;
+			height: 20px;
+			display: flex; 
+			justify-content: space-between;
+			animation: opa 4s infinite;
+		}
+		#mes , #dia , #anyo {
+			color: white;
+			display: flex;
+			justify-content: center;
+			width: 33.3%;
+		}
+		.f{
+
+			
+			
+		}
+		::placeholder{
+			
+			
+			
+			background: black;
+			color: white;
+			text-align: center ;
+		}
+		#hora,#minutos{
+			border:2px solid #0ef7f4;
+			text-align: center;
+			
+			color: white;
+			background: black;
+		}
+
+		#form-alarm{
+			display: flex;
+			justify-content: center;
+			height: 35px;
+		}
+		#boton{
+			background: #0ef7f4;
+			border: 3px solid transparent;
+			width: 35px;
+			margin-left: 3px;
+
+		}
+		#boton:hover{
+			opacity: .5;
+		}
+		#alarms{
+
+			text-align:center ;
+
+			color: white;
+			width: 100%;
+			height: auto;
+		}
+		#audio{
+			display: none;
+		}
+		#stop{
+			display: none;
+			border:2px solid red;
+			background: red;
+			height: 30px;
+			
+			
+		}
+		.cont{
+			display: flex;
+			justify-content: center;
+			margin-bottom: 10px ;
+		}
+		@keyframes opa{
+			0%{
+				opacity: 1;
+			}
+			50%{
+				opacity: 0.4;
+			}
+			100%{
+				opacity: 1;
+			}
+			
+		}
+		</style>
+	
+</head>
+<body onload="most()">
+
+	<div class="all" >
+		<div class="cont"><button id = "stop" onclick="playSound('false')">Parar</button></div>
+		
+		<div id="date" >
+				<div id="mes"></div>
+				<div id="dia"></div>
+				<div id="anyo"></div>
+			</div>
+		<div class="ti" id="time">
+			
+			<div id="hrs"></div>
+			<div class="puntos">:</div>
+			<div id="min"></div>
+			<div class="puntos">:</div>
+			<div id="seg"></div>
+		</div>
+		<div id="alarms"></div>
+		<div class="f">
+			<form name="alarm" id="form-alarm">
+				<input type="number"  id="hora" placeholder="Hora" required>
+				<input type="number"  id="minutos" placeholder="Minutos" required>
+				<input type="button" id="boton" value="+" onclick="newAlarm()">
+			</form>
+		</div>
+	</div>
+	<audio id="audio" controls>
+	<source type="audio/mp3" src="son.mp3">
+	</audio>
+	<script>
+		const $ = id => document.getElementById(id)
+
+		var alarms = new Array ;
+		const dias = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"] ;
+		const meses = ["Enero" , "Febrero" , "Marzo" ,"Abril","Mayo","Junio","Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre"];
+		
+		function playSound(si){
+			var music = document.getElementById("audio");
+			var buton = $('stop') ;
+			if(si == 'true'){
+				buton.style.display ="block";
+				music.play();
+				music.loop =true;		
+			}else{
+				buton.style.display ="none";
+				music.pause();
+			}
+		}
+		function check(h,m){
+			var momentoActual = new Date();
+			if (h ==  parseInt(momentoActual.getHours())  && m == parseInt(momentoActual.getMinutes()) ){
+				playSound("true");
+				return true;
+			}
+			return false ;
+
+		}
+		function mostrarAlarm(){
+			var mo = $('alarms');
+			mo.innerHTML="";
+			for (var i = alarms.length - 1; i >= 0; i--) {
+				mo.innerHTML += alarms[i].hrs+":"+alarms[i].minutos+"<br>"; 
+				console.log(check(alarms[i].hrs,alarms[i].minutos))
+				if(check(alarms[i].hrs,alarms[i].minutos)){
+					alarms.splice(i,1);
+				}
+			}
+			setTimeout(mostrarAlarm,1000);
+		}
+		function newAlarm(){
+			var con = new Object() ;
+			var hora = parseInt($('hora').value);
+			var minutes = parseInt($('minutos').value );
+			var command = $('hora').value = "" ;
+			command = $('minutos').value = "" ;
+			con.hrs = hora ;
+			con.minutos = minutes
+			alarms.push(con);
+			console.log(alarms);
+			mostrarAlarm();
+		}
+		function most(){
+			var momentoActual = new Date(); 
+			const anyo = $('anyo') ;
+			const mes = $('mes') ;
+			const dia = $('dia') ;
+			const hrs = $('hrs') ;
+			const min = $('min') ; 
+			const seg = $('seg') ;
+			anyo.innerHTML = "2022";
+			mes.innerHTML = "" ;
+			dia.innerHTML = "" ;
+			seg.innerHTML = "" ; 
+			min.innerHTML = "" ;
+			hrs.innerHTML = "" ;
+			mes.innerHTML += meses[momentoActual.getMonth()-1];
+			dia.innerHTML += dias[momentoActual.getDay()-1];
+			hrs.innerHTML += momentoActual.getHours() ;
+        	min.innerHTML += momentoActual.getMinutes();  
+        	seg.innerHTML += momentoActual.getSeconds() ;
+        	setTimeout(function(){
+        		most();
+        	},500);
+		}
+	</script>
+</body>
+</html>
