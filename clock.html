@@ -166,8 +166,12 @@
 	</audio>
 	<script>
 		const $ = id => document.getElementById(id)
-
+		var historiAlarmas = localStorage.getItem('alarmas');
 		var alarms = new Array ;
+		if(historiAlarmas){
+			al();
+		}
+		
 		const dias = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"] ;
 		const meses = ["Enero" , "Febrero" , "Marzo" ,"Abril","Mayo","Junio","Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre"];
 		
@@ -197,11 +201,12 @@
 			mo.innerHTML="";
 			for (var i = alarms.length - 1; i >= 0; i--) {
 				mo.innerHTML += alarms[i].hrs+":"+alarms[i].minutos+"<br>"; 
-				console.log(check(alarms[i].hrs,alarms[i].minutos))
 				if(check(alarms[i].hrs,alarms[i].minutos)){
 					alarms.splice(i,1);
+					localStorage.setItem('alarmas',rec());
 				}
 			}
+
 			setTimeout(mostrarAlarm,1000);
 		}
 		function newAlarm(){
@@ -213,7 +218,9 @@
 			con.hrs = hora ;
 			con.minutos = minutes
 			alarms.push(con);
-			console.log(alarms);
+			
+			localStorage.setItem('alarmas',rec());
+			console.log(rec());
 			mostrarAlarm();
 		}
 		function most(){
@@ -238,6 +245,23 @@
         	setTimeout(function(){
         		most();
         	},500);
+		}
+		function al(){
+			var a  = historiAlarmas.split("-");
+			for (var i = 0 ; i < a.length -1 ; i++) {
+				console.log(a[i]);
+				alarms.push(JSON.parse(a[i]));
+			}
+			
+				mostrarAlarm();
+			
+		}
+		function rec(){
+			var conjunto  = ""; 
+			alarms.forEach((value)=>{
+				conjunto +=  JSON.stringify(value)  + "-";
+ 			});
+ 			return conjunto;
 		}
 	</script>
 </body>
